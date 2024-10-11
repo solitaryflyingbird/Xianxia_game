@@ -1,0 +1,35 @@
+{
+    "personal_status": {
+        "basic_info": {
+            "name": "주인공 이름",
+            "gender": "남성",
+            "age": 20
+        },
+        "fixed_attributes": {
+            "spiritual_root": "혼합 영근",
+            "appearance": 7,
+            "intelligence": 8,
+            "luck": 5
+        },
+        "variable_attributes": {
+            "cultivation_stage": "초급 경지",
+            "techniques": [
+                {
+                    "name": "기초 검법",
+                    "proficiency": 50
+                },
+                {
+                    "name": "기초 내공",
+                    "proficiency": 60
+                }
+            ]
+        },
+        "items": {
+            "equipment": {
+                "weapon": "기본 검",
+                "armor": "수련복"
+            },
+            "currency": 100
+        }
+    }
+}
