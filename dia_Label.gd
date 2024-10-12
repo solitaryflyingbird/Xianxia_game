@@ -7,3 +7,5 @@ func _ready():
 # 시그널을 받아 텍스트를 갱신하는 함수
 func _on_dialogue_text_changed(text: String, character: String):
 	self.text = character + ": " + text
+	print(self.text)
+	
