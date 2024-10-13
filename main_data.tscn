@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://status_Label.gd" type="Script" id=1]
 [ext_resource path="res://main_data.gd" type="Script" id=2]
@@ -7,6 +7,7 @@
 [ext_resource path="res://event_manager.gd" type="Script" id=5]
 [ext_resource path="res://dia_Label.gd" type="Script" id=6]
 [ext_resource path="res://jabmu_Button.gd" type="Script" id=7]
+[ext_resource path="res://item_Button.gd" type="Script" id=8]
 
 [sub_resource type="DynamicFont" id=1]
 font_data = ExtResource( 3 )
@@ -36,12 +37,20 @@ margin_bottom = 40.0
 script = ExtResource( 4 )
 
 [node name="jabmu_Button" type="Button" parent="event_manager/button_manager"]
-margin_left = 17.0
-margin_top = 23.0
-margin_right = 167.0
-margin_bottom = 84.0
+margin_left = 21.0
+margin_top = 26.0
+margin_right = 171.0
+margin_bottom = 87.0
 text = "jabmu"
 script = ExtResource( 7 )
+
+[node name="item_Button" type="Button" parent="event_manager/button_manager"]
+margin_left = 21.0
+margin_top = 100.0
+margin_right = 170.0
+margin_bottom = 158.0
+text = "item 1"
+script = ExtResource( 8 )
 
 [node name="dia_Label" type="Label" parent="event_manager"]
 margin_left = 24.0

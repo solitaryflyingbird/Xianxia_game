@@ -100,7 +100,7 @@ var event_data = {
 
 func _ready():
 	print(MainData.player_data)
-	add_event_to_queue(get_event_by_id(10001))
+	add_event_to_queue(get_event_by_id(1))
 
 
 func _input(event):
