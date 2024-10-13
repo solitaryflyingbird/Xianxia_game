@@ -37,7 +37,7 @@ func get_player_data():
 	return player_data
 	
 	
-#변 수치 조작 함수
+#수치 조작 함수
 func modify_player_stat(stat_name: String, value: int, data: Dictionary = player_data):
 	for key in data.keys():
 		var item = data[key]

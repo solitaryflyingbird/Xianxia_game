@@ -21,4 +21,5 @@ func data_gathering():
 		   "나이 : " + str(player_data["variable_attributes"]["age"]) + "살\n" + \
 		   "경지 : " + player_data["variable_attributes"]["cultivation_stage"] +"\n"+ \
 		   "공헌패 : " + str(player_data["variable_attributes"]["money"])  +"\n"+ \
-		   "계절 : " + player_data["variable_attributes"]["season"]
+		   "계절 : " + player_data["variable_attributes"]["season"] +"\n"+ \
+		   "건강 : "  + str(player_data["variable_attributes"]["health"])
