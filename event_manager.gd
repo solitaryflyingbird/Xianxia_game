@@ -74,7 +74,7 @@ var event_data = {
 			"type": "event_sequence",
 			"auto_execute": false,  # 자동 실행
 			"content": {
-				"event_ids": [10002, 10003, 10002, 10003, 10002, 10003, 10004]  # 차례로 실행할 이벤트들의 ID 목록
+				"event_ids": [10002, 10003, 10002, 10003, 10002, 10003, 10004, 10005]  # 차례로 실행할 이벤트들의 ID 목록
 			}
 		},
 		{
@@ -105,6 +105,12 @@ var event_data = {
 				"stat_name": "money",
 				"value": 30
 			}
+		},
+		{
+			"id": 10005,
+			"type": "call_function",
+			"function": "advance_time",
+			"auto_execute": true,
 		},
 	]
 }
