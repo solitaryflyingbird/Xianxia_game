@@ -1,7 +1,7 @@
 extends Button
 
 # 호출할 이벤트 ID를 저장
-var event_id = 10001  # 버튼이 호출할 이벤트의 ID
+export(int) var event_id
 var event_manager  # event_manager에 대한 참조
 
 func _ready():

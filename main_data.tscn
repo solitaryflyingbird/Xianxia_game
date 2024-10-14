@@ -43,6 +43,16 @@ margin_right = 171.0
 margin_bottom = 87.0
 text = "jabmu"
 script = ExtResource( 7 )
+event_id = 10001
+
+[node name="restore_Button" type="Button" parent="event_manager/button_manager"]
+margin_left = 21.0
+margin_top = 169.0
+margin_right = 171.0
+margin_bottom = 230.0
+text = "restore"
+script = ExtResource( 7 )
+event_id = 10011
 
 [node name="item_Button" type="Button" parent="event_manager/button_manager"]
 margin_left = 21.0

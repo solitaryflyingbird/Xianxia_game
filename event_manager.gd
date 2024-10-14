@@ -69,6 +69,7 @@ var event_data = {
 				"event_ids": [1, 2, 3, 4]  # 차례로 실행할 이벤트들의 ID 목록
 			}
 		},
+###### 잡무
 		{
 			"id": 10001,
 			"type": "event_sequence",
@@ -112,6 +113,37 @@ var event_data = {
 			"function": "advance_time",
 			"auto_execute": true,
 		},
+######잡무
+
+
+######휴식
+		{
+			"id": 10011,
+			"type": "event_sequence",
+			"auto_execute": false,  # 자동 실행
+			"content": {
+				"event_ids": [10012, 10013]  # 차례로 실행할 이벤트들의 ID 목록
+			}
+		},
+		{
+			"id": 10012,
+			"type": "dialogue",
+			"auto_execute": false,
+			"content": [
+				{"text": "휴식을 취했다.", "character": "아랑"},
+			]
+		},
+		{
+			"id": 10013,
+			"type": "call_function",
+			"function": "modify_player_stat",
+			"auto_execute": true,
+			"content": {
+				"stat_name": "health",
+				"value": 30
+			}
+		},
+#####휴식
 	]
 }
 

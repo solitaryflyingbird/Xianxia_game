@@ -9,7 +9,7 @@ var item_data = {
 	3: {"name": "중형 영약", "type": "consumable", "effect": "health_restore", "value": 50},
 	4: {"name": "강화된 검", "type": "weapon", "attack": 20, "durability": 150}
 }
-
+var max_value = {"health" : 100}
 var player_data = {
 	"fixed_attributes": {
 		"name": "아랑",
@@ -66,7 +66,10 @@ func modify_player_stat(params: Dictionary, data: Dictionary = player_data):
 			continue
 		elif key == stat_name:
 			data[key] += value
-			print(stat_name + " has been modified by " + str(value))
+			# max_value 체크 및 적용
+			if max_value.has(stat_name):
+				data[key] = min(data[key], max_value[stat_name])
+			print(stat_name + " has been modified to " + str(data[key]))
 			emit_signal("data_changed")
 			return true
 	if data == player_data:
