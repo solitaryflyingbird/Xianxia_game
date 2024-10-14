@@ -54,35 +54,24 @@ func get_item_data(item_id):
 	return item_data.get(item_id)
 
 # 수치 조작 함수
-func modify_player_stat(params: Dictionary):
+func modify_player_stat(params: Dictionary, data: Dictionary = player_data):
 	var stat_name = params.get("stat_name", "")
 	var value = params.get("value", 0)
-	
-	for key in player_data.keys():
-		var item = player_data[key]
-		
-		if typeof(item) == TYPE_DICTIONARY:
-			_modify_player_stat_recursive(stat_name, value, item)
-		elif key == stat_name:
-			player_data[key] += value
-			print(stat_name + " has been modified by " + str(value))
-			emit_signal("data_changed")
-			return
-	
-	print("Error: Invalid stat name - " + stat_name)
-func _modify_player_stat_recursive(stat_name: String, value: int, data: Dictionary):
 	for key in data.keys():
 		var item = data[key]
-		
 		if typeof(item) == TYPE_DICTIONARY:
-			_modify_player_stat_recursive(stat_name, value, item)
+			if modify_player_stat({"stat_name": stat_name, "value": value}, item):
+				return true
 		elif typeof(item) == TYPE_ARRAY:
 			continue
 		elif key == stat_name:
 			data[key] += value
 			print(stat_name + " has been modified by " + str(value))
 			emit_signal("data_changed")
-			return
+			return true
+	if data == player_data:
+		print("Error: Invalid stat name - " + stat_name)
+	return false
 			
 # 시간 흐름 함수 춘하추동
 func advance_time():
@@ -129,3 +118,5 @@ func remove_item_from_inventory(item_id: int, quantity: int):
 # 아이템 정보 조회 함수
 func get_item_info(item_id: int):
 	return item_data.get(item_id, null)
+	
+	

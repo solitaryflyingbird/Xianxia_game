@@ -239,3 +239,4 @@ func get_event_by_id(event_id: int):
 		if event["id"] == event_id:
 			return event
 	return null
+	
