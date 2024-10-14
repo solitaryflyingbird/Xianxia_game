@@ -54,6 +54,15 @@ margin_bottom = 158.0
 text = "item 1"
 script = ExtResource( 8 )
 
+[node name="cond button" type="Button" parent="event_manager/button_manager"]
+margin_left = 22.0
+margin_top = 245.0
+margin_right = 172.0
+margin_bottom = 306.0
+text = "cond"
+script = ExtResource( 7 )
+event_id = 10021
+
 [node name="dia_Label" type="Label" parent="event_manager"]
 margin_left = 24.0
 margin_top = 398.0

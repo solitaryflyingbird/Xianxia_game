@@ -153,6 +153,62 @@ var event_data = {
 			}
 		},
 #####휴식
+
+		{
+			"id": 10021,
+			"type": "conditional",
+			"auto_execute": false,
+			"condition": {
+				"type": "stat_check",
+				"stat_name": "money",
+				"value": 500,
+				"comparison": "gte"  # greater than or equal
+			},
+			"success_event_id": 10022,
+			"failure_event_id": 10023
+		},
+		{
+			"id": 10022,
+			"type": "event_sequence",
+			"auto_execute": false,
+			"content": {
+				"event_ids": [10024, 10025, 10026]  # Money 감소, 특정 이벤트 실행
+			}
+		},
+		{
+			"id": 10023,
+			"type": "dialogue",
+			"auto_execute": false,
+			"content": [
+				{"text": "돈이 부족합니다.", "character": "시스템"}
+			]
+		},
+		{
+			"id": 10024,
+			"type": "call_function",
+			"function": "modify_player_stat",
+			"auto_execute": false,
+			"content": {
+				"stat_name": "money",
+				"value": -500
+			}
+		},
+		{
+			"id": 10025,
+			"type": "dialogue",
+			"auto_execute": false,
+			"content": [
+				{"text": "500 공헌도를 지불했습니다.", "character": "시스템"}
+			]
+		},
+		{
+			"id": 10026,
+			"type": "dialogue",
+			"auto_execute": false,
+			"content": [
+				{"text": "특별한 이벤트가 발생했습니다!", "character": "시스템"}
+			]
+		}
 	]
 }
 
@@ -168,6 +224,7 @@ func _input(event):
 				print("Processing event on user click")
 				process_event()
 			else:
+				print(event_queue)
 				print("Auto-execute event is already being processed")
 
 # 큐에 이벤트를 추가하는 함수 (단일 이벤트)
@@ -199,10 +256,12 @@ func process_event():
 		"call_function":
 			print("call function")
 			process_call_function_event(current_event)
+		"conditional":
+			print("conditional")
+			process_conditional_event(current_event)
 		"event_sequence":
 			print("sequence")
 			process_event_sequence(current_event)
-
 
 # 현재 이벤트 완료 후 큐에서 제거하고 다음 이벤트로 넘어가는 함수
 func complete_event():
@@ -270,12 +329,40 @@ func hide_image(image_path):
 	else:
 		print("Image not found: ", image_path)
 	complete_event()  # 이미지 숨김 이벤트도 자동 실행이므로 완료 처리
-
+#함수 호출
 func process_call_function_event(event):
 	var function_name = event["function"]
 	var content = event.get("content", {})
 	MainData.call_function(function_name, content)
 	complete_event()
+
+#분기문
+func process_conditional_event(event):
+	var condition = event["condition"]
+	var success = false
+	match condition["type"]:
+		"stat_check":
+			var stat_value = MainData.get_player_data()["variable_attributes"][condition["stat_name"]]
+			match condition["comparison"]:
+				"gte":
+					success = stat_value >= condition["value"]
+				"lte":
+					success = stat_value <= condition["value"]
+				"eq":
+					success = stat_value == condition["value"]
+	
+	var next_event_id = event["success_event_id"] if success else event["failure_event_id"]
+	var next_event = get_event_by_id(next_event_id)
+	
+	if next_event:
+		# 다음 이벤트를 현재 큐의 맨 앞에 추가
+		event_queue.pop_front()  # 현재 조건부 이벤트 제거
+		event_queue.push_front(next_event)  # 다음 이벤트를 맨 앞에 추가
+		process_event()  # 즉시 다음 이벤트 처리
+	else:
+		complete_event()  # 다음 이벤트가 없으면 현재 이벤트 완료
+		
+
 
 func process_event_sequence(event):
 	var event_ids = event["content"]["event_ids"]
