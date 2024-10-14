@@ -22,4 +22,5 @@ func data_gathering():
 		   "경지 : " + player_data["variable_attributes"]["cultivation_stage"] +"\n"+ \
 		   "공헌패 : " + str(player_data["variable_attributes"]["money"])  +"\n"+ \
 		   "계절 : " + player_data["variable_attributes"]["season"] +"\n"+ \
-		   "건강 : "  + str(player_data["variable_attributes"]["health"])
+		   "건강 : "  + str(player_data["variable_attributes"]["health"])+"\n"+ \
+		   "수명 : "  + str(player_data["variable_attributes"]["remain_life"])		

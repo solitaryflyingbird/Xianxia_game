@@ -75,13 +75,22 @@ var event_data = {
 			"type": "event_sequence",
 			"auto_execute": false,  # 자동 실행
 			"content": {
-				"event_ids": [10002, 10003, 10002, 10003, 10002, 10003, 10004, 10005]  # 차례로 실행할 이벤트들의 ID 목록
+				"event_ids": [10006, 10003, 10002, 10003, 10002, 10003, 10004, 10005]  # 차례로 실행할 이벤트들의 ID 목록
 			}
 		},
 		{
 			"id": 10002,
 			"type": "dialogue",
 			"auto_execute": false,
+			"content": [
+				{"text": "종문 잡무 업무를 맡았다.", "character": "아랑"},
+				{"text": "오늘도 열심히 일했다.", "character": "아랑"},
+			]
+		},
+		{
+			"id": 10006,
+			"type": "dialogue",
+			"auto_execute": true,
 			"content": [
 				{"text": "종문 잡무 업무를 맡았다.", "character": "아랑"},
 				{"text": "오늘도 열심히 일했다.", "character": "아랑"},
@@ -122,13 +131,13 @@ var event_data = {
 			"type": "event_sequence",
 			"auto_execute": false,  # 자동 실행
 			"content": {
-				"event_ids": [10012, 10013]  # 차례로 실행할 이벤트들의 ID 목록
+				"event_ids": [10012, 10013, 10005]  # 차례로 실행할 이벤트들의 ID 목록
 			}
 		},
 		{
 			"id": 10012,
 			"type": "dialogue",
-			"auto_execute": false,
+			"auto_execute": true,
 			"content": [
 				{"text": "휴식을 취했다.", "character": "아랑"},
 			]
@@ -154,8 +163,12 @@ func _ready():
 func _input(event):
 	if event is InputEventMouseButton and event.pressed:
 		if event_queue.size() > 0:
-			print("click process event")
-			process_event()
+			var current_event = event_queue[0]
+			if not current_event.get("auto_execute", true):
+				print("Processing event on user click")
+				process_event()
+			else:
+				print("Auto-execute event is already being processed")
 
 # 큐에 이벤트를 추가하는 함수 (단일 이벤트)
 func add_event_to_queue(event):
@@ -169,7 +182,6 @@ func add_events_to_queue(events: Array):
 
 # 현재 큐의 첫 번째 이벤트를 처리하는 함수
 func process_event():
-	print(len(event_queue))
 	if event_queue.size() == 0:
 		print("No events to process.")
 		return
@@ -215,13 +227,21 @@ func complete_event():
 func process_dialogue_event(event):
 	var dialogue_content = event["content"]
 	var current_line = event.get("current_line", 0)
+	var auto_execute = event.get("auto_execute", false)
 	if current_line < dialogue_content.size():
 		var text_data = dialogue_content[current_line]
 		emit_signal("dialogue_text_changed", text_data["text"], text_data["character"])
 		event["current_line"] = current_line + 1
+		if auto_execute:
+			# Auto-execute 모드에서는 모든 대화를 즉시 처리
+			call_deferred("process_dialogue_event", event)
+		else:
+			# 수동 모드에서는 다음 클릭을 기다림
+			print("Waiting for next click to continue dialogue")
 	else:
+		# 모든 대화 라인이 처리되면 이벤트 완료
 		event["current_line"] = 0 
-		complete_event()  # 이벤트 완료
+		complete_event()
 
 		
 # 이미지 표시 함수
