@@ -38,6 +38,15 @@ var player_data = {
 	}
 }
 
+func call_function(function_name: String, params: Dictionary = {}):
+	match function_name:
+		"modify_player_stat":
+			modify_player_stat(params)
+		"advance_time":
+			advance_time()
+		_:
+			print("Error: Function " + function_name + " not found in MainData")
+
 func get_player_data():
 	return player_data
 
@@ -45,27 +54,36 @@ func get_item_data(item_id):
 	return item_data.get(item_id)
 
 # 수치 조작 함수
-func modify_player_stat(stat_name: String, value: int, data: Dictionary = player_data):
+func modify_player_stat(params: Dictionary):
+	var stat_name = params.get("stat_name", "")
+	var value = params.get("value", 0)
+	
+	for key in player_data.keys():
+		var item = player_data[key]
+		
+		if typeof(item) == TYPE_DICTIONARY:
+			_modify_player_stat_recursive(stat_name, value, item)
+		elif key == stat_name:
+			player_data[key] += value
+			print(stat_name + " has been modified by " + str(value))
+			emit_signal("data_changed")
+			return
+	
+	print("Error: Invalid stat name - " + stat_name)
+func _modify_player_stat_recursive(stat_name: String, value: int, data: Dictionary):
 	for key in data.keys():
 		var item = data[key]
 		
-		# 만약 Dictionary이면 재귀적으로 호출하여 수정
 		if typeof(item) == TYPE_DICTIONARY:
-			modify_player_stat(stat_name, value, item)
-		
-		# 배열은 무시 (techniques, inventory 등을 포함)
+			_modify_player_stat_recursive(stat_name, value, item)
 		elif typeof(item) == TYPE_ARRAY:
 			continue
-		
-		# 해당하는 stat_name을 찾으면 값을 수정
 		elif key == stat_name:
 			data[key] += value
 			print(stat_name + " has been modified by " + str(value))
 			emit_signal("data_changed")
 			return
-	
-	print("Error: Invalid stat name or array detected - " + stat_name)
-
+			
 # 시간 흐름 함수 춘하추동
 func advance_time():
 	var current_season = player_data["variable_attributes"]["season"]
@@ -79,6 +97,7 @@ func advance_time():
 		player_data["variable_attributes"]["season"] = "봄"
 		player_data["variable_attributes"]["age"] += 1
 		player_data["variable_attributes"]["remain_life"] -= 1
+	print("advance_time")
 	emit_signal("data_changed")
 
 # 아이템 추가 함수

@@ -74,7 +74,7 @@ var event_data = {
 			"type": "event_sequence",
 			"auto_execute": false,  # 자동 실행
 			"content": {
-				"event_ids": [10002, 10003, 10002, 10003, 10002, 10003]  # 차례로 실행할 이벤트들의 ID 목록
+				"event_ids": [10002, 10003, 10002, 10003, 10002, 10003, 10004]  # 차례로 실행할 이벤트들의 ID 목록
 			}
 		},
 		{
@@ -88,11 +88,22 @@ var event_data = {
 		},
 		{
 			"id": 10003,
-			"type": "modify_stat",
-			"auto_execute": true,  # 자동 실행
+			"type": "call_function",
+			"function": "modify_player_stat",
+			"auto_execute": true,
 			"content": {
-				"stat_name": "health",  # 수정할 스탯 이름
-				"value": -10  # 수정할 값
+				"stat_name": "health",
+				"value": -10
+			}
+		},
+		{
+			"id": 10004,
+			"type": "call_function",
+			"function": "modify_player_stat",
+			"auto_execute": true,
+			"content": {
+				"stat_name": "money",
+				"value": 30
 			}
 		},
 	]
@@ -100,7 +111,6 @@ var event_data = {
 
 func _ready():
 	print(MainData.player_data)
-	add_event_to_queue(get_event_by_id(1))
 
 
 func _input(event):
@@ -136,11 +146,11 @@ func process_event():
 		"hide_image":
 			print("hide")
 			hide_image(current_event["content"]["image_path"])
-		"modify_stat":
-			print("sfat")
-			modify_stat_event(current_event)
+		"call_function":
+			print("call function")
+			process_call_function_event(current_event)
 		"event_sequence":
-			print("swquence")
+			print("sequence")
 			process_event_sequence(current_event)
 
 
@@ -203,12 +213,12 @@ func hide_image(image_path):
 		print("Image not found: ", image_path)
 	complete_event()  # 이미지 숨김 이벤트도 자동 실행이므로 완료 처리
 
-func modify_stat_event(event):
-	var stat_name = event["content"]["stat_name"]
-	var value = event["content"]["value"]
-	MainData.modify_player_stat(stat_name, value)
+func process_call_function_event(event):
+	var function_name = event["function"]
+	var content = event.get("content", {})
+	MainData.call_function(function_name, content)
 	complete_event()
-	
+
 func process_event_sequence(event):
 	var event_ids = event["content"]["event_ids"]
 	for event_id in event_ids:

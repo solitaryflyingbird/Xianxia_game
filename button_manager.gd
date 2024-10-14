@@ -8,8 +8,7 @@ func _ready():
 	# event_manager의 시그널을 연결
 	event_manager = get_parent()  # event_manager가 부모 노드라고 가정
 	event_manager.connect("event_queue_changed", self, "_on_event_queue_changed")
-	
-	hide_buttons()  # 처음에는 버튼을 숨김
+
 
 # event_queue_changed 시그널을 수신할 때 호출되는 함수
 func _on_event_queue_changed(is_empty):
