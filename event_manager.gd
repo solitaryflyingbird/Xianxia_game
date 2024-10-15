@@ -211,6 +211,123 @@ var event_data = {
 			]
 		},
 #####수련
+
+#### 영약 구입
+	{
+		"id": 10031,
+		"type": "conditional",
+		"auto_execute": false,
+		"condition": {
+			"type": "stat_check",
+			"stat_name": "money",
+			"value": 500,
+			"comparison": "gte"  # greater than or equal
+		},
+		"success_event_id": 10032,
+		"failure_event_id": 10033
+	},
+	{
+		"id": 10032,
+		"type": "event_sequence",
+		"auto_execute": false,
+		"content": {
+			"event_ids": [10034, 10035, 10036]  # 아이템 구매, 대사 출력
+		}
+	},
+	{
+		"id": 10033,
+		"type": "dialogue",
+		"auto_execute": false,
+		"content": [
+			{"text": "돈이 없습니다.", "character": "시스템"}
+		]
+	},
+	{
+		"id": 10034,
+		"type": "call_function",
+		"function": "add_item_to_inventory",
+		"auto_execute": true,
+		"content": {
+			"item_id": 1,
+			"quantity": 1
+		}
+	},
+	{
+		"id": 10035,
+		"type": "dialogue",
+		"auto_execute": false,
+		"content": [
+			{"text": "소형 영약을 구매했습니다.", "character": "시스템"}
+		]
+	},
+	{
+		"id": 10036,
+		"type": "call_function",
+		"function": "modify_player_stat",
+		"auto_execute": false,
+		"content": {
+			"stat_name": "money",
+			"value": -500
+		}
+	},
+	{
+		"id": 10041,
+		"type": "conditional",
+		"auto_execute": false,
+		"condition": {
+			"type": "stat_check",
+			"stat_name": "money",
+			"value": 1000,
+			"comparison": "gte"  # greater than or equal
+		},
+		"success_event_id": 10042,
+		"failure_event_id": 10043
+	},
+	{
+		"id": 10042,
+		"type": "event_sequence",
+		"auto_execute": false,
+		"content": {
+			"event_ids": [10044, 10045, 10046]  # 아이템 구매, 대사 출력
+		}
+	},
+	{
+		"id": 10043,
+		"type": "dialogue",
+		"auto_execute": false,
+		"content": [
+			{"text": "돈이 없습니다.", "character": "시스템"}
+		]
+	},
+	{
+		"id": 10044,
+		"type": "call_function",
+		"function": "add_item_to_inventory",
+		"auto_execute": true,
+		"content": {
+			"item_id": 3,
+			"quantity": 1
+		}
+	},
+	{
+		"id": 10045,
+		"type": "dialogue",
+		"auto_execute": false,
+		"content": [
+			{"text": "중형 영약을 구매했습니다.", "character": "시스템"}
+		]
+	},
+	{
+		"id": 10046,
+		"type": "call_function",
+		"function": "modify_player_stat",
+		"auto_execute": false,
+		"content": {
+			"stat_name": "money",
+			"value": -1000
+		}
+	},
+
 	]
 }
 

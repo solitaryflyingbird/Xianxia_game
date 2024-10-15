@@ -5,7 +5,7 @@ export(int) var event_id
 var event_manager  # event_manager에 대한 참조
 
 func _ready():
-	# 부모의 부모인 button_manager에서 event_manager를 찾음 (button_manager가 event_manager의 자식임을 가정)
+	self.focus_mode = Control.FOCUS_NONE
 	event_manager = get_parent().get_parent()
 
 	# 버튼 클릭 시 신호 연결

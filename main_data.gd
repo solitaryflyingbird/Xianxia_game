@@ -40,8 +40,11 @@ func call_function(function_name: String, params: Dictionary = {}):
 			modify_player_stat(params)
 		"advance_time":
 			advance_time()
+		"add_item_to_inventory":
+			add_item_to_inventory(params)
 		_:
 			print("Error: Function " + function_name + " not found in MainData")
+
 
 func get_player_data():
 	return player_data
@@ -95,17 +98,28 @@ func advance_time():
 	emit_signal("data_changed")
 
 # 아이템 추가 함수
-func add_item_to_inventory(item_id: int, quantity: int):
-	var inventory = player_data["variable_attributes"]["inventory"]
+func add_item_to_inventory(params: Dictionary, data: Dictionary = player_data):
+	var item_id = params.get("item_id", -1)
+	var quantity = params.get("quantity", 0)
+
+	if item_id == -1:
+		print("Error: Invalid item ID")
+		return false
+
+	var inventory = data["variable_attributes"].get("inventory", [])
+	
 	for item in inventory:
 		if item["id"] == item_id:
 			item["quantity"] += quantity
 			emit_signal("data_changed")
-			return
-	
+			return true
+
 	# 아이템이 인벤토리에 없으면 새로 추가
 	inventory.append({"id": item_id, "quantity": quantity})
+	data["variable_attributes"]["inventory"] = inventory
 	emit_signal("data_changed")
+	return true
+
 
 # 아이템 제거 함수
 func remove_item_from_inventory(item_id: int, quantity: int):
