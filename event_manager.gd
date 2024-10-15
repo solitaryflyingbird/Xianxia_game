@@ -154,6 +154,7 @@ var event_data = {
 		},
 #####휴식
 
+#####수련
 		{
 			"id": 10021,
 			"type": "conditional",
@@ -208,7 +209,8 @@ var event_data = {
 			"content": [
 				{"text": "특별한 이벤트가 발생했습니다!", "character": "시스템"}
 			]
-		}
+		},
+#####수련
 	]
 }
 

@@ -26,10 +26,6 @@ var player_data = {
 		"health" : 100,
 		"experience_point" : 0,
 		"cultivation_stage": "연기기 1성",
-		"techniques": [
-			{"name": "기초 심법", "proficiency": 50},
-			{"name": "기초 화공", "proficiency": 60}
-		],
 		"money": 1000, # 소지한 공헌 양
 		"inventory": [
 			{"id": 1, "quantity": 5},  # 소형 영약
@@ -54,13 +50,18 @@ func get_item_data(item_id):
 	return item_data.get(item_id)
 
 # 수치 조작 함수
-func modify_player_stat(params: Dictionary, data: Dictionary = player_data):
+func modify_player_stat(params: Dictionary, data: Dictionary = player_data, depth: int = 0):
+	var max_depth = 15  # 재귀 깊이 제한
+	if depth > max_depth:
+		print("Error: Maximum recursion depth reached")
+		return false
+
 	var stat_name = params.get("stat_name", "")
 	var value = params.get("value", 0)
 	for key in data.keys():
 		var item = data[key]
 		if typeof(item) == TYPE_DICTIONARY:
-			if modify_player_stat({"stat_name": stat_name, "value": value}, item):
+			if modify_player_stat({"stat_name": stat_name, "value": value}, item, depth + 1):
 				return true
 		elif typeof(item) == TYPE_ARRAY:
 			continue
@@ -75,6 +76,7 @@ func modify_player_stat(params: Dictionary, data: Dictionary = player_data):
 	if data == player_data:
 		print("Error: Invalid stat name - " + stat_name)
 	return false
+
 			
 # 시간 흐름 함수 춘하추동
 func advance_time():
