@@ -2,7 +2,7 @@ extends VBoxContainer
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	# MainData의 data_changed 신호를 update_inventory_ui 함수에 연결
+	self.visible = false
 	MainData.connect("data_changed", self, "update_inventory_ui")
 	
 	# 처음 인벤토리 UI를 초기화
