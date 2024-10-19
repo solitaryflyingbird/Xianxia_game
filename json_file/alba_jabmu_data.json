@@ -1,6 +1,58 @@
 {
     "events": [
       {
+        "id": 10001,
+        "type": "event_sequence",
+        "auto_execute": false,
+        "content": {
+          "event_ids": [10006, 10003, 10002, 10003, 10002, 10003, 10004, 10005]
+        }
+      },
+      {
+        "id": 10002,
+        "type": "dialogue",
+        "auto_execute": false,
+        "content": [
+          {"text": "종문 잡무 업무를 맡았다.", "character": "아랑"},
+          {"text": "오늘도 열심히 일했다.", "character": "아랑"}
+        ]
+      },
+      {
+        "id": 10006,
+        "type": "dialogue",
+        "auto_execute": true,
+        "content": [
+          {"text": "종문 잡무 업무를 맡았다.", "character": "아랑"},
+          {"text": "오늘도 열심히 일했다.", "character": "아랑"}
+        ]
+      },
+      {
+        "id": 10003,
+        "type": "call_function",
+        "function": "modify_player_stat",
+        "auto_execute": true,
+        "content": {
+          "stat_name": "health",
+          "value": -10
+        }
+      },
+      {
+        "id": 10004,
+        "type": "call_function",
+        "function": "modify_player_stat",
+        "auto_execute": true,
+        "content": {
+          "stat_name": "money",
+          "value": 30
+        }
+      },
+      {
+        "id": 10005,
+        "type": "call_function",
+        "function": "advance_time",
+        "auto_execute": true
+      },
+      {
         "id": 10011,
         "type": "event_sequence",
         "auto_execute": false,

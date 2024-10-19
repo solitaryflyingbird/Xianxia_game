@@ -12,23 +12,59 @@ func _ready():
 	print(MainData.player_data)
 
 func load_event_data():
-	var file = File.new()
-	if file.file_exists("res://json_file/event_data.json"):
-		file.open("res://json_file/event_data.json", File.READ)
-		var json_text = file.get_as_text()
-		file.close()
-		var json_result = JSON.parse(json_text)
-		if json_result.error == OK:
-			event_data = json_result.result
-			print("JSON data loaded successfully")
-		else:
-			print("JSON Parse Error: ", json_result.error)
-			print("Error Line: ", json_result.error_line)
-			print("Error String: ", json_result.error_string)
+	var dir = Directory.new()
+	var json_path = "res://json_file/"
+	
+	# Initialize event_data with an empty "events" array if it doesn't exist
+	if not "events" in event_data:
+		event_data["events"] = []
+	
+	if dir.open(json_path) == OK:
+		dir.list_dir_begin(true, true)
+		var file_name = dir.get_next()
+		
+		while file_name != "":
+			if file_name.ends_with(".json"):
+				var full_path = json_path + file_name
+				var file = File.new()
+				if file.file_exists(full_path):
+					file.open(full_path, File.READ)
+					var json_text = file.get_as_text()
+					file.close()
+					var json_result = JSON.parse(json_text)
+					if json_result.error == OK:
+						var data = json_result.result
+						if typeof(data) == TYPE_DICTIONARY and "events" in data:
+							for event in data["events"]:
+								if "id" in event:
+									# Check if the event already exists
+									var existing_event = get_event_by_id(event["id"])
+									if existing_event:
+										# Update existing event
+										var index = event_data["events"].find(existing_event)
+										event_data["events"][index] = event
+									else:
+										# Add new event
+										event_data["events"].append(event)
+							print("Events loaded successfully from: " + file_name)
+						else:
+							print("Warning: 'events' key not found or invalid structure in " + file_name)
+					else:
+						print("JSON Parse Error in " + file_name + ": ", json_result.error)
+						print("Error Line: ", json_result.error_line)
+						print("Error String: ", json_result.error_string)
+				else:
+					print("Cannot open file: " + full_path)
+			
+			file_name = dir.get_next()
+		
+		dir.list_dir_end()
 	else:
-		print("Cannot find event_data.json")
+		print("Cannot open directory: " + json_path)
 		print("Current script path: ", get_script().resource_path)
 		print("Project root path: ", ProjectSettings.globalize_path("res://"))
+
+	print("Total events loaded: ", event_data["events"].size())
 
 func _input(event):
 	if event is InputEventMouseButton and event.pressed:
