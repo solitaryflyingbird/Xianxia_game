@@ -30,3 +30,4 @@ func update_inventory_ui():
 	
 	# 기존 라벨에 이어서 작성된 텍스트 설정
 	item_label.text = new_text
+
